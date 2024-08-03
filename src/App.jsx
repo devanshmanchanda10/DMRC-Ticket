@@ -145,15 +145,64 @@ function App() {
   const [wallet, setWallet] = useState(0);
   const [searchPrice, setSearchPrice] = useState('');
   const [filteredPosts, setFilteredPosts] = useState([]);
-  function BlurredImage({ src, isBlurred, alt }) {
+  function BlurredImage({ src, isBlurred, alt, inCart, filename }) {
+    const handleDownload = () => {
+      const link = document.createElement('a');
+      link.href = src;
+      link.download = filename || 'ticket.jpg';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    };
+  
     return (
-      <img 
-        src={src} 
-        alt={alt} 
-        className={isBlurred ? "blurred-image" : "clear-image"}
-      />
+      <div className="image-container">
+        <img 
+          src={src} 
+          alt={alt} 
+          className={isBlurred ? "blurred-image" : "clear-image"}
+        />
+        {inCart && (
+          <button onClick={handleDownload} className="download-button">
+            Download
+          </button>
+        )}
+      </div>
     );
   }
+  const resizeImage = (file, maxWidth, maxHeight) => {
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          let width = img.width;
+          let height = img.height;
+  
+          if (width > height) {
+            if (width > maxWidth) {
+              height *= maxWidth / width;
+              width = maxWidth;
+            }
+          } else {
+            if (height > maxHeight) {
+              width *= maxHeight / height;
+              height = maxHeight;
+            }
+          }
+  
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, width, height);
+          resolve(canvas.toDataURL('image/jpeg', 0.7)); // You can adjust quality here
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    });
+  };
   
   
 
@@ -224,12 +273,11 @@ function App() {
   }, [searchPrice, posts]);
   // const handleSearchPriceChange = (e) => setSearchPrice(e.target.value);
 
-  const handleImageChange = (e) => {
+  const handleImageChange = async (e) => {
     const file = e.target.files[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onload = (e) => setSelectedImage(e.target.result);
-      reader.readAsDataURL(file);
+      const resizedImage = await resizeImage(file, 800, 600); // You can adjust these dimensions
+      setSelectedImage(resizedImage);
     }
   };
 
@@ -258,13 +306,20 @@ function App() {
     try {
       const { purchasedPost, updatedWallet } = await api.purchasePost(postId, user.username);
       
+      // Add timestamp to the purchased post
+      const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+      const postWithTimestamp = {
+        ...purchasedPost,
+        purchaseTimestamp: timestamp
+      };
+      
       // Remove the purchased post from posts and filteredPosts
       const updatedPosts = posts.filter(post => post.id !== postId);
       setPosts(updatedPosts);
       setFilteredPosts(updatedPosts.filter(post => Number(post.price) >= Number(searchPrice)));
       
       // Add the purchased post to the cart
-      setCart(prevCart => [...prevCart, purchasedPost]);
+      setCart(prevCart => [...prevCart, postWithTimestamp]);
       
       // Update wallet
       setWallet(updatedWallet);
@@ -328,17 +383,23 @@ function App() {
       </button>
       
       {showCart ? (
-        <div className="cart-container">
-          <h2>Your Cart</h2>
-          {cart.map((item) => (
-  <div key={item.id} className="cart-item">
-    <BlurredImage src={item.image} isBlurred={false} alt="Purchased" />
-    <p>Price: ${item.price}</p>
-    <p>Sold by: {item.author}</p>
+  <div className="cart-container">
+    <h2>Your Cart</h2>
+    {cart.map((item) => (
+      <div key={item.id} className="cart-item">
+        <BlurredImage 
+          src={item.image} 
+          isBlurred={false} 
+          alt="Purchased" 
+          inCart={true}
+          filename={`ticket_${item.id}.jpg`}
+        />
+        <p>Price: ${item.price}</p>
+        <p>Sold by: {item.author}</p>
+      </div>
+    ))}
   </div>
-))}
-        </div>
-      ) : (
+) : (
         <>
           <form onSubmit={handleSubmit} className="upload-form">
             <div className="form-group">
