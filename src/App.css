@@ -1,0 +1,154 @@
+.App {
+  text-align: center;
+  padding: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.login-form, .upload-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.login-form input, .form-group input {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+  box-sizing: border-box;
+}
+
+.form-group {
+  margin-bottom: 15px;
+  width: 100%;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  text-align: left;
+}
+
+.submit-button, .login-form button, .logout-button, .delete-button, .purchase-button, .cart-button {
+  padding: 10px 20px;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  margin: 5px;
+}
+
+.submit-button, .login-form button {
+  background-color: #4CAF50;
+}
+
+.submit-button:hover, .login-form button:hover {
+  background-color: #45a049;
+}
+
+.logout-button {
+  background-color: #f44336;
+}
+
+.logout-button:hover {
+  background-color: #d32f2f;
+}
+
+.delete-button {
+  background-color: #ff9800;
+}
+
+.delete-button:hover {
+  background-color: #f57c00;
+}
+
+.purchase-button {
+  background-color: #2196F3;
+}
+
+.purchase-button:hover {
+  background-color: #1976D2;
+}
+
+.cart-button {
+  background-color: #9C27B0;
+}
+
+.cart-button:hover {
+  background-color: #7B1FA2;
+}
+
+.posts-container, .cart-container {
+  margin-top: 20px;
+}
+
+.post, .cart-item {
+  border: 1px solid #ddd;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.posted-image, .cart-image {
+  max-width: 100%;
+  max-height: 300px;
+  margin-bottom: 10px;
+}
+.clear-all-button {
+  margin-top: 10px;
+  padding: 10px 20px;
+  background-color: #f44336;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.clear-all-button:hover {
+  background-color: #d32f2f;
+}
+.search-container {
+  margin: 20px 0;
+}
+
+.search-input {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+}
+.search-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.search-input {
+  margin-right: 10px;
+  padding: 5px;
+  font-size: 16px;
+}
+
+.search-button {
+  background-color: #4CAF50;
+  border: none;
+  color: white;
+  padding: 10px 15px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+.blurred-image {
+  filter: blur(10px);
+  transition: filter 0.3s ease-in-out;
+}
+
+.clear-image {
+  filter: blur(0);
+  transition: filter 0.3s ease-in-out;
+}
