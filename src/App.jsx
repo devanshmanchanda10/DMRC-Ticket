@@ -222,7 +222,7 @@ function App() {
       setFilteredPosts(filtered);
     }
   }, [searchPrice, posts]);
-  const handleSearchPriceChange = (e) => setSearchPrice(e.target.value);
+  // const handleSearchPriceChange = (e) => setSearchPrice(e.target.value);
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -342,7 +342,7 @@ function App() {
         <>
           <form onSubmit={handleSubmit} className="upload-form">
             <div className="form-group">
-              <label htmlFor="priceInput">Enter Price: </label>
+              <label htmlFor="priceInput">Enter Price of Your Ticket: </label>
               <input
                 type="number"
                 id="priceInput"
@@ -353,7 +353,7 @@ function App() {
             </div>
             
             <div className="form-group">
-              <label htmlFor="imageInput">Select Image: </label>
+              <label htmlFor="imageInput">Upload Ticket QR: </label>
               <input
                 type="file"
                 id="imageInput"
@@ -363,15 +363,15 @@ function App() {
               />
             </div>
             
-            <button type="submit" className="submit-button">Submit</button>
+            <button type="submit" className="submit-button">Sell Your Ticket</button>
           </form>
 
           <div className="search-container">
-  <label htmlFor="priceSearch">Show posts with price at least: $</label>
+  <label htmlFor="priceSearch">Price of ticket you want</label>
   <input
     id="priceSearch"
     type="number"
-    placeholder="Enter minimum price"
+    placeholder="Enter price"
     value={searchTerm}
     onChange={handleSearchInputChange}
     className="search-input"
